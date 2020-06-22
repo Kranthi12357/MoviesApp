@@ -15,8 +15,14 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     final Context context;
-    ArrayList<data> datas ;
-    public Adapter(Context context){
+    ArrayList<data> datas;
+     private final ListItemClickListner mOnClickListener ;
+
+    public interface ListItemClickListner{
+        void onListemItemClick(String image,String release , Double avg,int id);
+    }
+    public Adapter(Context context,ListItemClickListner listItemClickListner){
+        mOnClickListener = listItemClickListner;
         this.context = context;
     }
     public void setdata(ArrayList<data> d){
@@ -49,7 +55,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         }
     }
 
-    public static class  ViewHolder extends RecyclerView.ViewHolder{
+    public  class  ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
       final  TextView textView,textView1;
         ImageView imageView;
         public ViewHolder(View itemview){
@@ -58,6 +64,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             textView1 = itemview.findViewById(R.id.rating);
             //textView2 = (TextView)itemview.findViewById(R.id.name);
             imageView = itemview.findViewById(R.id.tumbnail);
+            itemview.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+           String image = datas.get(getAdapterPosition()).image;
+           String date = datas.get(getAdapterPosition()).release_date;
+           Double avg = datas.get(getAdapterPosition()).vote_average;
+           int id = datas.get(getAdapterPosition()).id;
+           Log.e("id",String.valueOf(id));
+
+            mOnClickListener.onListemItemClick(image,date,avg,id);
         }
     }
+
+
 }

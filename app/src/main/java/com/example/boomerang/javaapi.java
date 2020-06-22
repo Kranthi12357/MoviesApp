@@ -21,7 +21,6 @@ public class javaapi {
     public static ArrayList<data> fetch(String requesturl){
         URL url = CreateUrl(requesturl);
         String jsonresponse = null;
-
         try {
             jsonresponse = makehttprequest(url);
         }
@@ -44,10 +43,11 @@ public class javaapi {
             for(int i = 0; i<jsonArray.length();i++){
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String title = jsonObject1.getString("original_title");
+                int id = jsonObject1.getInt("id");
                 Double avg = jsonObject1.getDouble("vote_average");
                 String image = jsonObject1.getString("poster_path");
                 String date = jsonObject1.getString("release_date");
-                datas.add(new data(image,date,avg));
+                datas.add(new data(image,date,avg,id));
             }
         }
         catch (Exception e){
